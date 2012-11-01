@@ -15,8 +15,17 @@
 #
 #  You should have received a copy of the GNU General Public License
 
+"""
+count the number of read (or read pair)
+with N in the sequence
+"""
+
 import getopt
 
+from Bio import SeqIO
+
 def main(argv):
-    opts, args = getopt.getopt(argv, '', [])
+    opts, _ = getopt.getopt(argv, 's:1:2', [])
+    
+    
 
