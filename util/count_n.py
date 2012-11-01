@@ -15,16 +15,8 @@
 #
 #  You should have received a copy of the GNU General Public License
 
-import sys
+import getopt
 
-import util.count_n as count_n
+def main(argv):
+    opts, args = getopt.getopt(argv, '', [])
 
-def main():
-    if not sys.argv[1:]:
-        print >> sys.stderr, "missing command"
-        sys.exit(1)
-    if sys.argv[1] == 'count_n':
-        count_n.main(sys.argv[2:])
-    
-if __name__ == '__main__':
-    main()    
