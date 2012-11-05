@@ -76,8 +76,8 @@ def main(argv):
             fmt = arg
     
     if (not single_file 
-        or not pair_file_1
-        or not pair_file_2):
+        and (not pair_file_1
+        or not pair_file_2)):
         print >> sys.stderr, "missing options"
         sys.exit(1)
     
@@ -88,5 +88,5 @@ def main(argv):
     if not pair_file_1 or not pair_file_2:
         print >> sys.stderr, "missing options"
         sys.exit(1)
-    
+    paired_count_n(pair_file_1, pair_file_2, fmt)
 
