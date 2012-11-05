@@ -18,6 +18,7 @@
 import sys
 
 import util.count_n as count_n
+import util.kick_n as kick_n
 
 def main():
     if not sys.argv[1:]:
@@ -25,6 +26,8 @@ def main():
         sys.exit(1)
     if sys.argv[1] == 'count_n':
         count_n.main(sys.argv[2:])
+    elif sys.argv[1] == 'kick_n':
+        kick_n.main(sys.argv[2:])
     
 if __name__ == '__main__':
     main()    
