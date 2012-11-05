@@ -32,20 +32,20 @@ from itertools import izip
 from Bio import SeqIO
 
 
-def single_count_n(file, fmt):
+def single_kick_n(s_file, fmt, fout_prefix):
     rec_count = 0
     n_count = 0
     
-    for rec in SeqIO.parse(file, fmt):
+    for rec in SeqIO.parse(s_file, fmt):
         rec_count += 1
         if "N" in str(rec.seq).upper():
             n_count += 1
             
-    print "%d/%d" % (n_count, rec_count)
-    print n_count / rec_count
+    print >> sys.stderr, "%d/%d" % (n_count, rec_count)
+    print >> sys.stderr, n_count / rec_count
 
 
-def paired_count_n(file1, file2, fmt):
+def paired_kick_n(file1, file2, fmt, fout_prefix):
     pair_count = 0
     n_count = 1
     
@@ -54,16 +54,17 @@ def paired_count_n(file1, file2, fmt):
         if ("N" in str(rec1.seq).upper()) or ("N" in str(rec2.seq).upper()):
             n_count += 1
             
-    print "%d/%d" % (n_count, pair_count)
-    print n_count / pair_count
+    print >> sys.stderr, "%d/%d" % (n_count, pair_count)
+    print >> sys.stderr, n_count / pair_count
 
 
 def main(argv):
-    opts, _ = getopt.getopt(argv, 's:1:2:f:', [])
+    opts, _ = getopt.getopt(argv, 's:1:2:f:p:', [])
 
     single_file = None
     pair_file_1 , pair_file_2 = None, None
     fmt = None
+    fout_prefix = None
 
     for opt, arg in opts:
         if opt == '-s':
@@ -75,18 +76,19 @@ def main(argv):
         if opt == '-f':
             fmt = arg
     
-    if (not single_file 
+    if ((not single_file 
         and (not pair_file_1
-        or not pair_file_2)):
+        or not pair_file_2))
+        or not fout_prefix):
         print >> sys.stderr, "missing options"
         sys.exit(1)
     
     if single_file:
-        single_count_n(single_file, fmt)
+        single_kick_n(single_file, fmt)
         return
     
     if not pair_file_1 or not pair_file_2:
         print >> sys.stderr, "missing options"
         sys.exit(1)
-    paired_count_n(pair_file_1, pair_file_2, fmt)
+    paired_kick_n(pair_file_1, pair_file_2, fmt)
 

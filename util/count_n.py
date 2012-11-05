@@ -32,11 +32,11 @@ from itertools import izip
 from Bio import SeqIO
 
 
-def single_count_n(file, fmt):
+def single_count_n(s_file, fmt):
     rec_count = 0
     n_count = 0
     
-    for rec in SeqIO.parse(file, fmt):
+    for rec in SeqIO.parse(s_file, fmt):
         rec_count += 1
         if "N" in str(rec.seq).upper():
             n_count += 1
