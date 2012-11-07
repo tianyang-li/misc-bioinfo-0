@@ -36,10 +36,13 @@ def single_kick_n(s_file, fmt, fout_prefix):
     rec_count = 0
     n_count = 0
     
-    for rec in SeqIO.parse(s_file, fmt):
-        rec_count += 1
-        if "N" in str(rec.seq).upper():
-            n_count += 1
+    with open("%s.%fmt" % (fout_prefix, fmt)) as fout:
+        for rec in SeqIO.parse(s_file, fmt):
+            rec_count += 1
+            if "N" in str(rec.seq).upper():
+                n_count += 1
+            else:
+                fout.write(rec.format(fmt))
             
     print >> sys.stderr, "%d/%d" % (n_count, rec_count)
     print >> sys.stderr, n_count / rec_count
@@ -49,10 +52,15 @@ def paired_kick_n(file1, file2, fmt, fout_prefix):
     pair_count = 0
     n_count = 1
     
-    for rec1, rec2 in izip(SeqIO.parse(file1, fmt), SeqIO.parse(file2, fmt)):
-        pair_count += 1
-        if ("N" in str(rec1.seq).upper()) or ("N" in str(rec2.seq).upper()):
-            n_count += 1
+    with open("%s_1.%s" % (fout_prefix, fmt), 'w') as fout1:
+        with open("%s_2.%s" % (fout_prefix, fmt), 'w') as fout2:
+            for rec1, rec2 in izip(SeqIO.parse(file1, fmt), SeqIO.parse(file2, fmt)):
+                pair_count += 1
+                if ("N" in str(rec1.seq).upper()) or ("N" in str(rec2.seq).upper()):
+                    n_count += 1
+                else:
+                    fout1.write(rec1.format(fmt))
+                    fout2.write(rec2.format(fmt))
             
     print >> sys.stderr, "%d/%d" % (n_count, pair_count)
     print >> sys.stderr, n_count / pair_count
@@ -75,6 +83,8 @@ def main(argv):
             pair_file_2 = arg
         if opt == '-f':
             fmt = arg
+        if opt == '-p':
+            fout_prefix = arg
     
     if ((not single_file 
         and (not pair_file_1
