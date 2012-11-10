@@ -94,11 +94,11 @@ def main(argv):
         sys.exit(1)
     
     if single_file:
-        single_kick_n(single_file, fmt)
+        single_kick_n(single_file, fmt, fout_prefix)
         return
     
     if not pair_file_1 or not pair_file_2:
         print >> sys.stderr, "missing options"
         sys.exit(1)
-    paired_kick_n(pair_file_1, pair_file_2, fmt)
+    paired_kick_n(pair_file_1, pair_file_2, fmt, fout_prefix)
 
