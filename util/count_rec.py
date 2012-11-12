@@ -40,4 +40,9 @@ def main(args):
         or not reads):
         print >> sys.stderr, "missing options"
         sys.exit(1)
+    
+    for rec_count, _ in enumerate(SeqIO.parse(reads, fmt), start=1):
+        pass
+    
+    print rec_count
 
