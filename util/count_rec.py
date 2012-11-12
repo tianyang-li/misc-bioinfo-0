@@ -15,22 +15,29 @@
 #
 #  You should have received a copy of the GNU General Public License
 
+import getopt
 import sys
 
-import util.count_n as count_n
-import util.kick_n as kick_n
-import util.count_rec as count_rec
+from Bio import SeqIO
 
-def main():
-    if not sys.argv[1:]:
-        print >> sys.stderr, "missing command"
+def main(args):
+    try:
+        opts, _ = getopt.getopt(args, 'r:f:', [])
+    except getopt.GetoptError as err:
+        print >> sys.stderr, str(err)
         sys.exit(1)
-    if sys.argv[1] == 'count_n':
-        count_n.main(sys.argv[2:])
-    elif sys.argv[1] == 'kick_n':
-        kick_n.main(sys.argv[2:])
-    elif sys.argv[1] == 'count_rec':
-        count_rec.main(sys.argv[2:])
     
-if __name__ == '__main__':
-    main()    
+    fmt = None
+    reads = None
+    
+    for opt, arg in opts:
+        if opt == '-r':
+            reads = arg
+        if opt == '-f':
+            fmt = arg
+    
+    if (not fmt
+        or not reads):
+        print >> sys.stderr, "missing options"
+        sys.exit(1)
+
